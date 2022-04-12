@@ -38,7 +38,6 @@ export async function activate(context: vscode.ExtensionContext) {
 			  switch (message.command) {
 			  case 'test':
 				console.log('testing.');
-				panel.webview.html = "";
 				return;
 			  }
 			},
@@ -68,13 +67,17 @@ function getWebviewContent(results: any) {
 	<title>Example Webview</title>
 </head>
 <body>
-   <h1 style="margin-bottom: 250px">This works!</h1>
+   <h1>This works!</h1>
 	//Add some custom HTML here
+	<input oninput="onChange(this.value)" class="DocSearch-Input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search documentation" maxlength="64" type="search">
 	<button onclick="onClick()">Click</button>
 	<script>
 	  const vscode = acquireVsCodeApi();
 	  function onClick(){
 		vscode.postMessage({command: 'test',text: "testing"})
+	  }
+	  function onChange(val){
+		vscode.postMessage({command: 'test',text: val})
 	  }
 	</script>
 </body>
