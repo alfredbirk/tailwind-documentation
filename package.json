@@ -1,55 +1,53 @@
 {
-  "name": "tailwind-documentation",
-  "displayName": "Tailwind Documentation",
-  "description": "Instant documentation search for Tailwind CSS",
-  "version": "0.0.1",
+  "name": "vscode-webview-react",
+  "version": "0.1.0",
   "engines": {
-    "vscode": "^1.66.0"
+    "vscode": "^1.45.1"
   },
-  "categories": [
-    "Other"
-  ],
+  "publisher": "rebornix",
   "activationEvents": [
-    "onCommand:tailwind-documentation.search"
+    "onCommand:react-webview.start"
   ],
-  "main": "./dist/extension.js",
+  "main": "./build/ext-src/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "tailwind-documentation.search",
-        "title": "Tailwind search documentation"
+        "command": "react-webview.start",
+        "title": "Start React Webview",
+        "category": "React"
       }
     ]
   },
+  "dependencies": {
+    "@types/vscode": "^1.45.1",
+    "node-fetch": "^2.6.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
   "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "vscode:prepublish": "npm run compile",
+    "start": "react-scripts start",
+    "build": "npm run compile",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "compile": "./scripts/build-non-split.js && tsc -p tsconfig.extension.json",
+    "pretest": "npm run compile"
   },
   "devDependencies": {
-    "@types/glob": "^7.2.0",
-    "@types/mocha": "^9.1.0",
-    "@types/node": "14.x",
+    "@types/jest": "^25.2.3",
+    "@types/node": "^14.0.11",
     "@types/node-fetch": "^2.6.1",
-    "@types/vscode": "^1.66.0",
-    "@typescript-eslint/eslint-plugin": "^5.16.0",
-    "@typescript-eslint/parser": "^5.16.0",
-    "@vscode/test-electron": "^2.1.3",
-    "eslint": "^8.11.0",
-    "glob": "^7.2.0",
-    "mocha": "^9.2.2",
-    "ts-loader": "^9.2.8",
-    "typescript": "^4.5.5",
-    "webpack": "^5.70.0",
-    "webpack-cli": "^4.9.2"
+    "@types/react": "^16.3.14",
+    "@types/react-dom": "^16.0.5",
+    "react-scripts": "^3.4.1",
+    "rewire": "^5.0.0",
+    "terser": "^4.7.0",
+    "typescript": "^3.9.10"
   },
-  "dependencies": {
-    "node-fetch": "^3.2.3"
-  }
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
