@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import logo from "./logo.svg";
 import { listenerCount } from "process";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookOpen, faHashtag, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 interface vscode {
 	postMessage(message: any): void;
@@ -123,60 +125,95 @@ const App = () => {
 	}
 	console.log("listElements", listElements);
 
-	let elementsToRender = []
-
+	let elementsToRender = [];
 
 	for (const lvl0Node of listElements) {
-
-		let stack = [lvl0Node]
+		let stack = [lvl0Node];
 		while (stack.length > 0) {
-			const currentNode = stack.pop()
+			const currentNode = stack.pop();
 			console.log("currentNode", currentNode);
+			const isHighestLvl = currentNode.children.length === 0;
 
 			switch (currentNode.lvl) {
 				case "lvl0":
-					elementsToRender.push(
-						<h2>{currentNode.name}</h2>
-					)
+					elementsToRender.push(<h2>{currentNode.name}</h2>);
 					break;
 				case "lvl1":
-					if (currentNode.children.length === 0) {
+					if (isHighestLvl) {
 						elementsToRender.push(
-							<div>{currentNode.name}</div>
-						)
+							<div className="item-container">
+								<div>
+									<span className="icon-container">
+										<FontAwesomeIcon icon={faHashtag} />
+									</span>
+									<span>{currentNode.name}</span>
+								</div>
+								<FontAwesomeIcon icon={faChevronRight} />
+							</div>
+						);
+					} else {
+						elementsToRender.push(
+							<div className="item-container">
+								<div>
+									<span className="icon-container">
+										<FontAwesomeIcon icon={faBookOpen} />
+									</span>
+									<span>{currentNode.name}</span>
+								</div>
+								<FontAwesomeIcon icon={faChevronRight} />
+							</div>
+						);
+					}
+					break;
+				case "lvl2":
+					if (isHighestLvl) {
+						elementsToRender.push(
+							<div className="item-container lvl2">
+								<div>
+									<span className="icon-container">
+										<FontAwesomeIcon icon={faHashtag} />
+									</span>
+									<span>{currentNode.name}</span>
+								</div>
+								<FontAwesomeIcon icon={faChevronRight} />
+							</div>
+						);
 					}
 					break;
 				case "lvl3":
-					if (currentNode.children.length === 0) {
+					if (isHighestLvl) {
 						elementsToRender.push(
-							<div className="lvl3">{currentNode.name}</div>
-						)
+							<div className="item-container lvl3">
+								<div>
+									<span className="icon-container">
+										<FontAwesomeIcon icon={faHashtag} />
+									</span>
+									<span>{currentNode.name}</span>
+								</div>
+								<FontAwesomeIcon icon={faChevronRight} />
+							</div>
+						);
 					}
 					break;
-			
+
 				default:
 					break;
 			}
 
 			for (const child of currentNode.children.reverse()) {
-				stack.push(child)
+				stack.push(child);
 			}
 		}
 	}
 
 	console.log("elementsToRender", elementsToRender);
 
-
-
 	return (
 		<div className="App">
-			<header className="App-header">
+			{/* <header className="App-header">
 				<img src={logo} className="App-logo" alt="logo" />
 				<h1 className="App-title">Welcome to React</h1>
-			</header>
-			<p className="App-intro">
-				To get started, edit <code>src/App.tsx</code> and save to reload.
-			</p>
+			</header> */}
 
 			<div className="modal">
 				<div className="search-container">
