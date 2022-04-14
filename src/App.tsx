@@ -35,20 +35,20 @@ const getNextLvl = (lvl: string) => {
 const App = () => {
 	const [query, setQuery] = useState("");
 	const [hits, setHits] = useState<any>([]);
+	const [iframeUrl, setIframeUrl] = useState("");
 	console.log("hits", hits);
 
 	// public render() {
 	//   // console.log("query", query);
 
 	const onInput = (e: any) => {
-		console.log("e", e);
 		const element = e.currentTarget as HTMLInputElement;
 		const value = element.value;
 
-		console.log("e2");
 		setQuery(value);
-		vscodeApi.postMessage(value);
-		console.log("e3");
+		console.log("SENDING value", value);
+		vscodeApi.postMessage({ command: "query", value: value });
+		// console.log("e3");
 	};
 
 	window.addEventListener("message", (message) => {
@@ -60,6 +60,10 @@ const App = () => {
 
 	let graph: any = {};
 	let lvl0Nodes: any = [];
+
+	if (iframeUrl) {
+		return <iframe width="100%" height="650px" src={iframeUrl} title="Tailwind documentation"></iframe>;
+	}
 
 	console.log("BEFORE FOR LOOP");
 	if (hits) {
@@ -74,6 +78,8 @@ const App = () => {
 					name: hit.hierarchy["lvl0"],
 					children: [],
 					lvl: "lvl0",
+					url: hit.url,
+					highlightResult: hit._highlightResult.hierarchy.lvl0.value,
 				};
 
 				graph[newNode.name] = newNode;
@@ -87,14 +93,14 @@ const App = () => {
 				{
 					const currentLvl: any = getNextLvl(previousLvl);
 					if (!currentLvl || !hit.hierarchy[currentLvl]) break;
-					console.log("currentNode", currentNode);
-					console.log("currentLvl", currentLvl);
+					// console.log("currentNode", currentNode);
+					// console.log("currentLvl", currentLvl);
 
 					const childrenNames = currentNode.children.map((child: any) => child.name);
-					console.log("");
-					console.log("childrenNames", childrenNames);
-					console.log("hit.hierarchy[currentLvl]", hit.hierarchy[currentLvl]);
-					console.log("");
+					// console.log("");
+					// console.log("childrenNames", childrenNames);
+					// console.log("hit.hierarchy[currentLvl]", hit.hierarchy[currentLvl]);
+					// console.log("");
 
 					if (childrenNames.includes(hit.hierarchy[currentLvl])) {
 						currentNode = graph[hit.hierarchy[currentLvl]];
@@ -103,6 +109,8 @@ const App = () => {
 							name: hit.hierarchy[currentLvl],
 							children: [],
 							lvl: currentLvl,
+							url: hit.url,
+							highlightResult: hit._highlightResult.hierarchy[currentLvl].value,
 						};
 
 						graph[newNode.name] = newNode;
@@ -123,7 +131,6 @@ const App = () => {
 	for (const lvl0Node of lvl0Nodes) {
 		listElements.push(lvl0Node);
 	}
-	console.log("listElements", listElements);
 
 	let elementsToRender = [];
 
@@ -131,7 +138,7 @@ const App = () => {
 		let stack = [lvl0Node];
 		while (stack.length > 0) {
 			const currentNode = stack.pop();
-			console.log("currentNode", currentNode);
+			// console.log("cur
 			const isHighestLvl = currentNode.children.length === 0;
 
 			switch (currentNode.lvl) {
@@ -183,7 +190,7 @@ const App = () => {
 				case "lvl3":
 					if (isHighestLvl) {
 						elementsToRender.push(
-							<div className="item-container lvl3">
+							<div onClick={() => setIframeUrl(currentNode.url)} className="item-container lvl3">
 								<div>
 									<span className="icon-container">
 										<FontAwesomeIcon icon={faHashtag} />

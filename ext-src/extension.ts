@@ -1,12 +1,13 @@
-import * as path from 'path';
-import * as vscode from 'vscode';
+import * as path from "path";
+import * as vscode from "vscode";
 import fetch from "node-fetch";
 
 export function activate(context: vscode.ExtensionContext) {
-
-	context.subscriptions.push(vscode.commands.registerCommand('react-webview.start', () => {
-		ReactPanel.createOrShow(context.extensionPath);
-	}));
+	context.subscriptions.push(
+		vscode.commands.registerCommand("react-webview.start", () => {
+			ReactPanel.createOrShow(context.extensionPath);
+		})
+	);
 }
 
 /**
@@ -18,7 +19,7 @@ class ReactPanel {
 	 */
 	public static currentPanel: ReactPanel | undefined;
 
-	private static readonly viewType = 'react';
+	private static readonly viewType = "react";
 
 	private readonly _panel: vscode.WebviewPanel;
 	private readonly _extensionPath: string;
@@ -45,58 +46,55 @@ class ReactPanel {
 			enableScripts: true,
 
 			// And restric the webview to only loading content from our extension's `media` directory.
-			localResourceRoots: [
-				vscode.Uri.file(path.join(this._extensionPath, 'build'))
-			]
+			localResourceRoots: [vscode.Uri.file(path.join(this._extensionPath, "build"))],
 		});
-		
-		// Set the webview's initial html content 
+
+		// Set the webview's initial html content
 		this._panel.webview.html = this._getHtmlForWebview();
 
 		// Listen for when the panel is disposed
 		// This happens when the user closes the panel or when the panel is closed programatically
 		this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
 
-		
 		// Handle messages from the webview
-		this._panel.webview.onDidReceiveMessage(async (message) => {
-			console.log(message)
-			this._panel.webview.postMessage('SENDING BACK')
+		this._panel.webview.onDidReceiveMessage(
+			async (message) => {
+				console.log(message);
 
+				switch (message.command) {
+					case "query":
+						// this._panel.webview.postMessage("SENDING BACK");
 
+						const body = `{"requests":[{"indexName":"tailwindcss","query":"${message.value}","params":"hitsPerPage=20&highlightPreTag=%3Cmark%3E&highlightPostTag=%3C%2Fmark%3E&attributesToRetrieve=%5B%22hierarchy.lvl0%22%2C%22hierarchy.lvl1%22%2C%22hierarchy.lvl2%22%2C%22hierarchy.lvl3%22%2C%22hierarchy.lvl4%22%2C%22hierarchy.lvl5%22%2C%22hierarchy.lvl6%22%2C%22content%22%2C%22type%22%2C%22url%22%5D&attributesToSnippet=%5B%22hierarchy.lvl1%3A10%22%2C%22hierarchy.lvl2%3A10%22%2C%22hierarchy.lvl3%3A10%22%2C%22hierarchy.lvl4%3A10%22%2C%22hierarchy.lvl5%3A10%22%2C%22hierarchy.lvl6%3A10%22%2C%22content%3A10%22%5D&snippetEllipsisText=%E2%80%A6&facetFilters=version%3Av3&distinct=1"}]}`;
+						console.log("HEY:", typeof body);
+						const response = await fetch(
+							"https://knpxzi5b0m-dsn.algolia.net/1/indexes/*/queries?x-algolia-agent=Algolia%20for%20JavaScript%20(4.9.2)%3B%20Browser%20(lite)%3B%20docsearch%20(1.0.0-alpha.27)%3B%20docsearch-react%20(1.0.0-alpha.27)%3B%20autocomplete-core%20(1.0.0-alpha.28)&x-algolia-api-key=5fc87cef58bb80203d2207578309fab6&x-algolia-application-id=KNPXZI5B0M",
+							{
+								headers: {},
+								body: body,
+								method: "POST",
+							}
+						);
+						console.log("after?");
+						const data: any = await response.json();
+						console.log("data 123", data);
 
-			const body = `{"requests":[{"indexName":"tailwindcss","query":"${message}","params":"hitsPerPage=20&highlightPreTag=%3Cmark%3E&highlightPostTag=%3C%2Fmark%3E&attributesToRetrieve=%5B%22hierarchy.lvl0%22%2C%22hierarchy.lvl1%22%2C%22hierarchy.lvl2%22%2C%22hierarchy.lvl3%22%2C%22hierarchy.lvl4%22%2C%22hierarchy.lvl5%22%2C%22hierarchy.lvl6%22%2C%22content%22%2C%22type%22%2C%22url%22%5D&attributesToSnippet=%5B%22hierarchy.lvl1%3A10%22%2C%22hierarchy.lvl2%3A10%22%2C%22hierarchy.lvl3%3A10%22%2C%22hierarchy.lvl4%3A10%22%2C%22hierarchy.lvl5%3A10%22%2C%22hierarchy.lvl6%3A10%22%2C%22content%3A10%22%5D&snippetEllipsisText=%E2%80%A6&facetFilters=version%3Av3&distinct=1"}]}`;
-			console.log("HEY:", typeof body);
-			const response = await fetch(
-				"https://knpxzi5b0m-dsn.algolia.net/1/indexes/*/queries?x-algolia-agent=Algolia%20for%20JavaScript%20(4.9.2)%3B%20Browser%20(lite)%3B%20docsearch%20(1.0.0-alpha.27)%3B%20docsearch-react%20(1.0.0-alpha.27)%3B%20autocomplete-core%20(1.0.0-alpha.28)&x-algolia-api-key=5fc87cef58bb80203d2207578309fab6&x-algolia-application-id=KNPXZI5B0M",
-				{
-					headers: {},
-					body: body,
-					method: "POST",
+						this._panel.webview.postMessage(data.results);
+
+					case "alert":
+						vscode.window.showErrorMessage(message.text);
+						return;
 				}
-			);
-			console.log("after?");
-			const data: any = await response.json();
-			console.log("data 123", data);
-
-			this._panel.webview.postMessage(data.results)
-
-
-
-
-
-			switch (message.command) {
-				case 'alert':
-					vscode.window.showErrorMessage(message.text);
-					return;
-			}
-		}, null, this._disposables);
+			},
+			null,
+			this._disposables
+		);
 	}
 
 	public doRefactor() {
 		// Send a message to the webview webview.
 		// You can send any JSON serializable data.
-		this._panel.webview.postMessage({ command: 'refactor' });
+		this._panel.webview.postMessage({ command: "refactor" });
 	}
 
 	public dispose() {
@@ -114,13 +112,13 @@ class ReactPanel {
 	}
 
 	private _getHtmlForWebview() {
-		const manifest = require(path.join(this._extensionPath, 'build', 'asset-manifest.json'));
-		const mainScript = manifest.files['main.js'];
-		const mainStyle = manifest.files['main.css'];
-		const scriptPathOnDisk = vscode.Uri.file(path.join(this._extensionPath, 'build', mainScript));
-		const scriptUri = scriptPathOnDisk.with({ scheme: 'vscode-resource' });
-		const stylePathOnDisk = vscode.Uri.file(path.join(this._extensionPath, 'build', mainStyle));
-		const styleUri = stylePathOnDisk.with({ scheme: 'vscode-resource' });
+		const manifest = require(path.join(this._extensionPath, "build", "asset-manifest.json"));
+		const mainScript = manifest.files["main.js"];
+		const mainStyle = manifest.files["main.css"];
+		const scriptPathOnDisk = vscode.Uri.file(path.join(this._extensionPath, "build", mainScript));
+		const scriptUri = scriptPathOnDisk.with({ scheme: "vscode-resource" });
+		const stylePathOnDisk = vscode.Uri.file(path.join(this._extensionPath, "build", mainStyle));
+		const styleUri = stylePathOnDisk.with({ scheme: "vscode-resource" });
 
 		// Use a nonce to whitelist which scripts can be run
 		const nonce = getNonce();
@@ -133,8 +131,9 @@ class ReactPanel {
 				<meta name="theme-color" content="#000000">
 				<title>React App</title>
 				<link rel="stylesheet" type="text/css" href="${styleUri}">
-				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: https:; script-src 'nonce-${nonce}';style-src vscode-resource: 'unsafe-inline' http: https: data:;">
-				<base href="${this._panel.webview.asWebviewUri(vscode.Uri.file(path.join(this._extensionPath, 'build')))}/">
+				<base href="${this._panel.webview.asWebviewUri(vscode.Uri.file(path.join(this._extensionPath, "build")))}/">
+				<meta http-equiv="Content-Security-Policy" content="default-src * self blob: data: gap:; style-src * self 'unsafe-inline' blob: data: gap:; script-src * 'self' 'unsafe-eval' 'unsafe-inline' blob: data: gap:; object-src * 'self' blob: data: gap:; img-src * self 'unsafe-inline' blob: data: gap:; connect-src self * 'unsafe-inline' blob: data: gap:; frame-src * self blob: data: gap:;">
+
 			</head>
 
 			<body>
