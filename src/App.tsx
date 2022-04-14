@@ -79,28 +79,28 @@ const App = () => {
 				lvl0Nodes.push(currentNode);
 			}
 
-			currentLvl = "lvl0";
+			let previousLvl = "lvl0";
 
 			for (let index = 0; index < 1000; index++) {
 				{
-					const nextLvl: any = getNextLvl(currentLvl);
-          if (!nextLvl || !hit.hierarchy[nextLvl]) break;
+					const currentLvl: any = getNextLvl(previousLvl);
+          if (!currentLvl || !hit.hierarchy[currentLvl]) break;
 					console.log("currentNode", currentNode);
-					console.log("nextLvl", nextLvl);
+					console.log("currentLvl", currentLvl);
 
           const childrenNames = currentNode.children.map((child: any) => child.name)
           console.log('')
           console.log("childrenNames", childrenNames);
-          console.log("hit.hierarchy[nextLvl]", hit.hierarchy[nextLvl]);
+          console.log("hit.hierarchy[currentLvl]", hit.hierarchy[currentLvl]);
           console.log('')
 
-					if (childrenNames.includes(hit.hierarchy[nextLvl])) {
-						currentNode = graph[hit.hierarchy[nextLvl]];
+					if (childrenNames.includes(hit.hierarchy[currentLvl])) {
+						currentNode = graph[hit.hierarchy[currentLvl]];
 					} else {
 						let newNode = {
-							name: hit.hierarchy[nextLvl],
+							name: hit.hierarchy[currentLvl],
 							children: [],
-							lvl: nextLvl,
+							lvl: currentLvl,
 						};
 
 						graph[newNode.name] = newNode;
@@ -109,7 +109,7 @@ const App = () => {
 					}
 
 
-					currentLvl = nextLvl;
+					previousLvl = currentLvl;
 
 					// currentNode = newNode;
 				}
