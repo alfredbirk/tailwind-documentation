@@ -84,15 +84,15 @@ const App = () => {
 			for (let index = 0; index < 1000; index++) {
 				{
 					const currentLvl: any = getNextLvl(previousLvl);
-          if (!currentLvl || !hit.hierarchy[currentLvl]) break;
+					if (!currentLvl || !hit.hierarchy[currentLvl]) break;
 					console.log("currentNode", currentNode);
 					console.log("currentLvl", currentLvl);
 
-          const childrenNames = currentNode.children.map((child: any) => child.name)
-          console.log('')
-          console.log("childrenNames", childrenNames);
-          console.log("hit.hierarchy[currentLvl]", hit.hierarchy[currentLvl]);
-          console.log('')
+					const childrenNames = currentNode.children.map((child: any) => child.name);
+					console.log("");
+					console.log("childrenNames", childrenNames);
+					console.log("hit.hierarchy[currentLvl]", hit.hierarchy[currentLvl]);
+					console.log("");
 
 					if (childrenNames.includes(hit.hierarchy[currentLvl])) {
 						currentNode = graph[hit.hierarchy[currentLvl]];
@@ -108,7 +108,6 @@ const App = () => {
 						currentNode = newNode;
 					}
 
-
 					previousLvl = currentLvl;
 
 					// currentNode = newNode;
@@ -123,6 +122,51 @@ const App = () => {
 		listElements.push(lvl0Node);
 	}
 	console.log("listElements", listElements);
+
+	let elementsToRender = []
+
+
+	for (const lvl0Node of listElements) {
+
+		let stack = [lvl0Node]
+		while (stack.length > 0) {
+			const currentNode = stack.pop()
+			console.log("currentNode", currentNode);
+
+			switch (currentNode.lvl) {
+				case "lvl0":
+					elementsToRender.push(
+						<h2>{currentNode.name}</h2>
+					)
+					break;
+				case "lvl1":
+					if (currentNode.children.length === 0) {
+						elementsToRender.push(
+							<div>{currentNode.name}</div>
+						)
+					}
+					break;
+				case "lvl3":
+					if (currentNode.children.length === 0) {
+						elementsToRender.push(
+							<div className="lvl3">{currentNode.name}</div>
+						)
+					}
+					break;
+			
+				default:
+					break;
+			}
+
+			for (const child of currentNode.children.reverse()) {
+				stack.push(child)
+			}
+		}
+	}
+
+	console.log("elementsToRender", elementsToRender);
+
+
 
 	return (
 		<div className="App">
@@ -169,7 +213,7 @@ const App = () => {
           <div>{hit.hierarchy.lvl1}</div>
         ))} */}
 
-			{listElements && listElements.map((listElement: any) => <div>{listElement.name}</div>)}
+			{elementsToRender && elementsToRender.map((element: any) => element)}
 		</div>
 	);
 };
