@@ -2,7 +2,7 @@ import * as React from "react";
 import "./App.css";
 import { useState } from "react";
 
-import logo from "./logo.svg";
+import logo from "./tailwind-logo.svg";
 import { listenerCount } from "process";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookOpen, faHashtag, faChevronRight } from "@fortawesome/free-solid-svg-icons";
@@ -148,7 +148,7 @@ const App = () => {
 				case "lvl1":
 					if (isHighestLvl) {
 						elementsToRender.push(
-							<div className="item-container">
+							<div onClick={() => setIframeUrl(currentNode.url)} className="item-container">
 								<div>
 									<span className="icon-container">
 										<FontAwesomeIcon icon={faHashtag} />
@@ -160,7 +160,7 @@ const App = () => {
 						);
 					} else {
 						elementsToRender.push(
-							<div className="item-container">
+							<div onClick={() => setIframeUrl(currentNode.url)} className="item-container">
 								<div>
 									<span className="icon-container">
 										<FontAwesomeIcon icon={faBookOpen} />
@@ -175,7 +175,7 @@ const App = () => {
 				case "lvl2":
 					if (isHighestLvl) {
 						elementsToRender.push(
-							<div className="item-container lvl2">
+							<div onClick={() => setIframeUrl(currentNode.url)} className="item-container lvl2">
 								<div>
 									<span className="icon-container">
 										<FontAwesomeIcon icon={faHashtag} />
@@ -222,6 +222,10 @@ const App = () => {
 				<h1 className="App-title">Welcome to React</h1>
 			</header> */}
 
+			<div className="App-header">
+				<img src={logo} className="App-logo" alt="logo" />
+			</div>
+
 			<div className="modal">
 				<div className="search-container">
 					<label className="DocSearch-MagnifierLabel" htmlFor="docsearch-input" id="docsearch-label">
@@ -242,6 +246,7 @@ const App = () => {
 						aria-autocomplete="list"
 						aria-labelledby="docsearch-label"
 						id="docsearch-input"
+						autoFocus
 						autoComplete="off"
 						autoCorrect="off"
 						autoCapitalize="off"

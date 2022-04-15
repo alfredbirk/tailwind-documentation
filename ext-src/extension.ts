@@ -41,7 +41,7 @@ class ReactPanel {
 		this._extensionPath = extensionPath;
 
 		// Create and show a new webview panel
-		this._panel = vscode.window.createWebviewPanel(ReactPanel.viewType, "React", column, {
+		this._panel = vscode.window.createWebviewPanel(ReactPanel.viewType, "Tailwind documentation", column, {
 			// Enable javascript in the webview
 			enableScripts: true,
 
@@ -129,7 +129,7 @@ class ReactPanel {
 				<meta charset="utf-8">
 				<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
 				<meta name="theme-color" content="#000000">
-				<title>React App</title>
+				<title>Tailwind documentation</title>
 				<link rel="stylesheet" type="text/css" href="${styleUri}">
 				<base href="${this._panel.webview.asWebviewUri(vscode.Uri.file(path.join(this._extensionPath, "build")))}/">
 				<meta http-equiv="Content-Security-Policy" content="default-src * self blob: data: gap:; style-src * self 'unsafe-inline' blob: data: gap:; script-src * 'self' 'unsafe-eval' 'unsafe-inline' blob: data: gap:; object-src * 'self' blob: data: gap:; img-src * self 'unsafe-inline' blob: data: gap:; connect-src self * 'unsafe-inline' blob: data: gap:; frame-src * self blob: data: gap:;">
