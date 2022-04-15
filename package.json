@@ -23,10 +23,13 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
+    "@types/lodash": "^4.14.181",
     "@types/vscode": "^1.45.1",
+    "lodash": "^4.17.21",
     "node-fetch": "^2.6.1",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "usehooks-ts": "^2.5.1"
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

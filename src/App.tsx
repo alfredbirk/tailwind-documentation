@@ -1,11 +1,12 @@
 import * as React from "react";
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import logo from "./tailwind-logo.svg";
-import { listenerCount } from "process";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookOpen, faHashtag, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { useDebounce } from 'usehooks-ts'
+
 
 interface vscode {
 	postMessage(message: any): void;
@@ -34,6 +35,7 @@ const getNextLvl = (lvl: string) => {
 
 const App = () => {
 	const [query, setQuery] = useState("");
+	const debouncedQuery = useDebounce<string>(query, 100)
 	const [hits, setHits] = useState<any>([]);
 	const [iframeUrl, setIframeUrl] = useState("");
 	console.log("hits", hits);
@@ -41,14 +43,15 @@ const App = () => {
 	// public render() {
 	//   // console.log("query", query);
 
+	useEffect(() => {
+		vscodeApi.postMessage({ command: "query", value: query });
+	  }, [debouncedQuery])
+
 	const onInput = (e: any) => {
 		const element = e.currentTarget as HTMLInputElement;
 		const value = element.value;
 
 		setQuery(value);
-		console.log("SENDING value", value);
-		vscodeApi.postMessage({ command: "query", value: value });
-		// console.log("e3");
 	};
 
 	window.addEventListener("message", (message) => {

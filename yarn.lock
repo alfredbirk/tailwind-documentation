@@ -1686,6 +1686,11 @@
   "resolved" "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.11.tgz"
   "version" "7.0.11"
 
+"@types/lodash@^4.14.181":
+  "integrity" "sha512-n3tyKthHJbkiWhDZs3DkhkCzt2MexYHXlX0td5iMplyfwketaOeKboEVBqzceH7juqvEg3q5oUoBFxSLu7zFag=="
+  "resolved" "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.181.tgz"
+  "version" "4.14.181"
+
 "@types/minimatch@*":
   "integrity" "sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ=="
   "resolved" "https://registry.npmjs.org/@types/minimatch/-/minimatch-3.0.5.tgz"
@@ -9029,7 +9034,7 @@
   optionalDependencies:
     "fsevents" "2.1.2"
 
-"react@^16.13.1", "react@^16.14.0", "react@>=16.x":
+"react@^16.13.1", "react@^16.14.0", "react@>=16.8.0", "react@>=16.x":
   "integrity" "sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.14.0.tgz"
   "version" "16.14.0"
@@ -10721,6 +10726,11 @@
   "integrity" "sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ=="
   "resolved" "https://registry.npmjs.org/use/-/use-3.1.1.tgz"
   "version" "3.1.1"
+
+"usehooks-ts@^2.5.1":
+  "integrity" "sha512-vGIl/r7SMey3Uwe/YykLTJ5AmrlBe02MwQxsUBxNWDmfegEdHXXQaJ2VoOEayKW85Zwr+NyIhfVG+xrQYjtXVg=="
+  "resolved" "https://registry.npmjs.org/usehooks-ts/-/usehooks-ts-2.5.1.tgz"
+  "version" "2.5.1"
 
 "util-deprecate@^1.0.1", "util-deprecate@^1.0.2", "util-deprecate@~1.0.1":
   "integrity" "sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8="
