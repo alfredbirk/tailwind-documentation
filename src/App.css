@@ -73,10 +73,6 @@ body {
   border: 1px solid #334154;
 }
 
-.icon-container::before {
-  border-left: 2px solid red;
-
-}
 
 .item-container:hover .icon-container {
   background-color: #0084C7;
@@ -123,4 +119,10 @@ body {
 .lvl3-container {
   display: flex;
   align-items: center;
+}
+
+.element-name mark {
+  color: white;
+  background: none;
+  font-weight: bold;
 }

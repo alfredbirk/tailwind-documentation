@@ -153,7 +153,7 @@ const App = () => {
 									<span className="icon-container">
 										<FontAwesomeIcon icon={faHashtag} />
 									</span>
-									<span>{currentNode.name}</span>
+									<span className="element-name" dangerouslySetInnerHTML={{ __html: currentNode.highlightResult }} />
 								</div>
 								<FontAwesomeIcon icon={faChevronRight} />
 							</div>
@@ -165,7 +165,7 @@ const App = () => {
 									<span className="icon-container">
 										<FontAwesomeIcon icon={faBookOpen} />
 									</span>
-									<span>{currentNode.name}</span>
+									<span className="element-name" dangerouslySetInnerHTML={{ __html: currentNode.highlightResult }} />
 								</div>
 								<FontAwesomeIcon icon={faChevronRight} />
 							</div>
@@ -180,7 +180,7 @@ const App = () => {
 									<span className="icon-container">
 										<FontAwesomeIcon icon={faHashtag} />
 									</span>
-									<span>{currentNode.name}</span>
+									<span className="element-name" dangerouslySetInnerHTML={{ __html: currentNode.highlightResult }} />
 								</div>
 								<FontAwesomeIcon icon={faChevronRight} />
 							</div>
@@ -196,7 +196,7 @@ const App = () => {
 									<span className="icon-container">
 										<FontAwesomeIcon icon={faHashtag} />
 									</span>
-									<span>{currentNode.name}</span>
+									<span className="element-name" dangerouslySetInnerHTML={{ __html: currentNode.highlightResult }} />
 								</div>
 								<FontAwesomeIcon icon={faChevronRight} />
 							</div>
