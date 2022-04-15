@@ -4,7 +4,7 @@ body {
 
 .App {
   text-align: left;
-  margin: 1rem;
+  /* margin: 1rem; */
   background-color: #1E293B;
 
   padding: 2rem;
@@ -73,7 +73,54 @@ body {
   border: 1px solid #334154;
 }
 
+.icon-container::before {
+  border-left: 2px solid red;
+
+}
+
 .item-container:hover .icon-container {
   background-color: #0084C7;
   border: 1px solid #4C9DD3;
+}
+
+.vertical-line {
+  /* height: 100%;
+  background-color: green;
+  padding: 1rem 1rem;
+  border-left: 2px solid red; */
+
+  /* width: 1px; /* Line width */
+  background-color: red; /* Line color */
+  height: 100%; /* Override in-line if you want specific height. */
+  /* float: left; */
+  padding: 2rem 1px;
+
+}
+
+.lvl3 {
+  /* display: flex;
+  flex: 1; */
+  margin-left: 2.5rem;
+  position: relative;
+}
+
+.vert::before {
+  --tw-bg-opacity: 1;
+    background-color: rgb(51 65 85/var(--tw-bg-opacity));
+    content: "";
+    position: absolute;
+    top: -0.25rem;
+    bottom: -0.25rem;
+    left: -2rem;
+    width: 1px;
+    background: #e2e8f0;
+
+    /* width: 2rem;
+    height: 2rem; */
+    background-color: #334154;
+}
+
+.lvl3-container {
+  display: flex;
+  align-items: center;
 }

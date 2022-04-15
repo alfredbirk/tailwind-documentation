@@ -190,8 +190,9 @@ const App = () => {
 				case "lvl3":
 					if (isHighestLvl) {
 						elementsToRender.push(
+							// <div className="vertical-line"></div>
 							<div onClick={() => setIframeUrl(currentNode.url)} className="item-container lvl3">
-								<div>
+								<div className="vert">
 									<span className="icon-container">
 										<FontAwesomeIcon icon={faHashtag} />
 									</span>
