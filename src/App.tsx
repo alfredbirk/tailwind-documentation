@@ -5,8 +5,7 @@ import { useState, useEffect } from "react";
 import logo from "./tailwind-logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookOpen, faHashtag, faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { useDebounce } from 'usehooks-ts'
-
+import { useDebounce } from "usehooks-ts";
 
 interface vscode {
 	postMessage(message: any): void;
@@ -35,7 +34,7 @@ const getNextLvl = (lvl: string) => {
 
 const App = () => {
 	const [query, setQuery] = useState("");
-	const debouncedQuery = useDebounce<string>(query, 100)
+	const debouncedQuery = useDebounce<string>(query, 100);
 	const [hits, setHits] = useState<any>([]);
 	const [iframeUrl, setIframeUrl] = useState("");
 	console.log("hits", hits);
@@ -45,7 +44,7 @@ const App = () => {
 
 	useEffect(() => {
 		vscodeApi.postMessage({ command: "query", value: query });
-	  }, [debouncedQuery])
+	}, [debouncedQuery]);
 
 	const onInput = (e: any) => {
 		const element = e.currentTarget as HTMLInputElement;
@@ -267,6 +266,7 @@ const App = () => {
         ))} */}
 
 			{elementsToRender && elementsToRender.map((element: any) => element)}
+
 		</div>
 	);
 };

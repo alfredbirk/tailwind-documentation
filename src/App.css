@@ -32,6 +32,11 @@ body {
   min-width: 0;
   flex: 1 1 auto;
   align-items: center;
+
+  border-bottom-width: 5px;
+
+  height: 3.5rem;
+  border-bottom: 1px solid rgb(226 232 240/.05);
 }
 
 .modal {
@@ -44,9 +49,6 @@ body {
   border-radius: 0.5rem;
 
   background: #1e293b;
-  box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 5%);
-
-
 }
 
 .item-container {
