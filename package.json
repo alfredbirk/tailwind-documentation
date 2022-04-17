@@ -3,10 +3,22 @@
   "displayName": "Tailwind Documentation",
   "description": "Instant documentation search for Tailwind CSS",
   "version": "0.1.0",
+  "icon": "src/tawilwind-logo.png",
   "engines": {
     "vscode": "^1.45.1"
   },
-  "publisher": "rebornix",
+  "keywords": [
+    "tailwind",
+    "documentation",
+    "docs",
+    "search",
+    "shortcut"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alfredbirk/tailwind-documentation"
+  },
+  "publisher": "alfredbirk",
   "activationEvents": [
     "onCommand:tailwind-documentation.search"
   ],
