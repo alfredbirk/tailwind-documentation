@@ -57,7 +57,7 @@ body {
 }
 
 .item-container {
-  padding: 1rem 1rem;
+  padding: 0.75rem 1rem;
   background-color: #233143;
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
@@ -135,7 +135,7 @@ body {
 }
 
 .DocSearch-Input {
-  height: 3.5rem;
+  height: 2.5rem;
   background: transparent;
   margin-left: 0.75rem;
   border: 0;
@@ -152,5 +152,5 @@ body {
 }
 
 .App .lvl0:first-of-type {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
