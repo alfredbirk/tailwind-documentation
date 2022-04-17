@@ -4,7 +4,7 @@ import fetch from "node-fetch";
 
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
-		vscode.commands.registerCommand("react-webview.start", () => {
+		vscode.commands.registerCommand("tailwind-documentation.search", () => {
 			ReactPanel.createOrShow(context.extensionPath);
 		})
 	);
@@ -33,7 +33,8 @@ class ReactPanel {
 		if (ReactPanel.currentPanel) {
 			ReactPanel.currentPanel._panel.reveal(column);
 		} else {
-			ReactPanel.currentPanel = new ReactPanel(extensionPath, column || vscode.ViewColumn.One);
+			// ReactPanel.currentPanel = new ReactPanel(extensionPath, column || vscode.ViewColumn.One);
+			ReactPanel.currentPanel = new ReactPanel(extensionPath, vscode.ViewColumn.Two);
 		}
 	}
 
@@ -129,7 +130,7 @@ class ReactPanel {
 				<meta charset="utf-8">
 				<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
 				<meta name="theme-color" content="#000000">
-				<title>Tailwind documentation</title>
+				<title>Tailwind Documentation</title>
 				<link rel="stylesheet" type="text/css" href="${styleUri}">
 				<base href="${this._panel.webview.asWebviewUri(vscode.Uri.file(path.join(this._extensionPath, "build")))}/">
 				<meta http-equiv="Content-Security-Policy" content="default-src * self blob: data: gap:; style-src * self 'unsafe-inline' blob: data: gap:; script-src * 'self' 'unsafe-eval' 'unsafe-inline' blob: data: gap:; object-src * 'self' blob: data: gap:; img-src * self 'unsafe-inline' blob: data: gap:; connect-src self * 'unsafe-inline' blob: data: gap:; frame-src * self blob: data: gap:;">

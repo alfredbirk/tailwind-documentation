@@ -145,7 +145,7 @@ const App = () => {
 
 			switch (currentNode.lvl) {
 				case "lvl0":
-					elementsToRender.push(<h2>{currentNode.name}</h2>);
+					elementsToRender.push(<h3 className="lvl0" dangerouslySetInnerHTML={{ __html: currentNode.name }} />);
 					break;
 				case "lvl1":
 					if (isHighestLvl) {
@@ -227,6 +227,7 @@ const App = () => {
 
 			<div className="App-header">
 				<img src={logo} className="App-logo" alt="logo" />
+				<h3>Tailwind documentation</h3>
 			</div>
 
 			<div className="modal">
@@ -254,7 +255,7 @@ const App = () => {
 						autoCorrect="off"
 						autoCapitalize="off"
 						// spellCheck="false"
-						placeholder="Search documentation"
+						placeholder="Search"
 						type="search"
 						value={query}
 					/>

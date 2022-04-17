@@ -12,11 +12,14 @@ body {
 }
 
 .App-logo {
-  height: 80px;
+  height: 25px;
+  margin-right: 0.5rem;
 }
 
 .App-header {
   color: white;
+  display: flex;
+  align-items: center;
 }
 
 .App-title {
@@ -127,4 +130,25 @@ body {
   color: white;
   background: none;
   font-weight: bold;
+}
+
+.DocSearch-Input {
+  height: 3.5rem;
+  background: transparent;
+  margin-left: 0.75rem;
+  border: 0;
+  color: rgb(226 232 240);
+  width: 100%;
+}
+
+.DocSearch-Input:focus {
+  outline: 0;
+}
+
+.App .lvl0:not(:first-of-type) {
+  margin-top: 1.5rem;
+}
+
+.App .lvl0:first-of-type {
+  margin-top: 0.5rem;
 }

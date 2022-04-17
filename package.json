@@ -1,20 +1,21 @@
 {
-  "name": "vscode-webview-react",
+  "name": "tailwind-documentation",
+  "displayName": "Tailwind Documentation",
+  "description": "Instant documentation search for Tailwind CSS",
   "version": "0.1.0",
   "engines": {
     "vscode": "^1.45.1"
   },
   "publisher": "rebornix",
   "activationEvents": [
-    "onCommand:react-webview.start"
+    "onCommand:tailwind-documentation.search"
   ],
   "main": "./build/ext-src/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "react-webview.start",
-        "title": "Start React Webview",
-        "category": "React"
+        "command": "tailwind-documentation.search",
+        "title": "Tailwind Documentation Search"
       }
     ]
   },
