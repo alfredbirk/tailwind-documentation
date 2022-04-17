@@ -69,7 +69,6 @@ const App = () => {
 		return <iframe width="100%" height="650px" src={iframeUrl} title="Tailwind documentation"></iframe>;
 	}
 
-	console.log("BEFORE FOR LOOP");
 	if (hits) {
 		for (const hit of hits) {
 			let currentLvl: any = "lvl0";
@@ -77,6 +76,9 @@ const App = () => {
 
 			if (hit.hierarchy["lvl0"] in graph) {
 				currentNode = graph[hit.hierarchy["lvl0"]];
+				if (currentNode.children.length >=5) {
+					continue
+				} 
 			} else {
 				let newNode = {
 					name: hit.hierarchy["lvl0"],
