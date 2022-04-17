@@ -10,4 +10,4 @@ Instant search in Tailwind docs. Will open within VSCode - don't lose context!
     - Windows:  `ctrl + alt + t`
 
 
-![Screen-Recording-2022-04-17-at-1 (2)](https://user-images.githubusercontent.com/11172530/163716519-b384c6e1-3168-4b63-88db-660121ebd160.gif)
+![Screen-Recording-2022-04-17-at-1 (4)](https://user-images.githubusercontent.com/11172530/163716626-8d74a1bb-f05b-4b45-aa12-70f66e0efad8.gif)
