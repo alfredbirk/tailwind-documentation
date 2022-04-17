@@ -43,7 +43,9 @@ const App = () => {
 	//   // console.log("query", query);
 
 	useEffect(() => {
-		vscodeApi.postMessage({ command: "query", value: query });
+		if (query) {
+			vscodeApi.postMessage({ command: "query", value: query });
+		}
 	}, [debouncedQuery]);
 
 	const onInput = (e: any) => {
@@ -266,7 +268,7 @@ const App = () => {
           <div>{hit.hierarchy.lvl1}</div>
         ))} */}
 
-			{elementsToRender && elementsToRender.map((element: any) => element)}
+			{elementsToRender.length > 0 && elementsToRender.map((element: any) => element)}
 
 		</div>
 	);
