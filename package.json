@@ -17,6 +17,13 @@
         "command": "tailwind-documentation.search",
         "title": "Tailwind Documentation Search"
       }
+    ],
+    "keybindings": [
+      {
+        "command": "tailwind-documentation.search",
+        "key": "ctrl+alt+t",
+        "mac": "ctrl+cmd+t"
+      }
     ]
   },
   "dependencies": {
