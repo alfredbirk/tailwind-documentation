@@ -1,10 +1,11 @@
 
 # Tailwind documentation
 
-Instant search in Tailwind docs. Will open within VSCode - don't lose context!
+Instant search in Tailwind docs
 
 
 ## Features
+- Will open within VSCode - don't lose context!
 - Open with:
     - Mac: `cmd + ctrl + t`
     - Windows:  `ctrl + alt + t`
