@@ -37,10 +37,7 @@ const App = () => {
 	const debouncedQuery = useDebounce<string>(query, 100);
 	const [hits, setHits] = useState<any>([]);
 	const [iframeUrl, setIframeUrl] = useState("");
-	console.log("hits", hits);
 
-	// public render() {
-	//   // console.log("query", query);
 
 	useEffect(() => {
 		if (query) {
@@ -56,10 +53,7 @@ const App = () => {
 	};
 
 	window.addEventListener("message", (message) => {
-		console.log("RECEIVED");
-		console.log(message);
 		setHits(message.data[0].hits);
-		console.log("RECEIVED 2");
 	});
 
 	let graph: any = {};
@@ -99,14 +93,8 @@ const App = () => {
 				{
 					const currentLvl: any = getNextLvl(previousLvl);
 					if (!currentLvl || !hit.hierarchy[currentLvl]) break;
-					// console.log("currentNode", currentNode);
-					// console.log("currentLvl", currentLvl);
 
 					const childrenNames = currentNode.children.map((child: any) => child.name);
-					// console.log("");
-					// console.log("childrenNames", childrenNames);
-					// console.log("hit.hierarchy[currentLvl]", hit.hierarchy[currentLvl]);
-					// console.log("");
 
 					if (childrenNames.includes(hit.hierarchy[currentLvl])) {
 						currentNode = graph[hit.hierarchy[currentLvl]];
@@ -144,7 +132,6 @@ const App = () => {
 		let stack = [lvl0Node];
 		while (stack.length > 0) {
 			const currentNode = stack.pop();
-			// console.log("cur
 			const isHighestLvl = currentNode.children.length === 0;
 
 			switch (currentNode.lvl) {
@@ -220,7 +207,6 @@ const App = () => {
 		}
 	}
 
-	console.log("elementsToRender", elementsToRender);
 
 	return (
 		<div className="App">
