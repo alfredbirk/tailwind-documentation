@@ -60,11 +60,9 @@ class ReactPanel {
 		// Handle messages from the webview
 		this._panel.webview.onDidReceiveMessage(
 			async (message) => {
-
 				switch (message.command) {
+					// Call agolia API for the search and send results back to webview
 					case "query":
-						// this._panel.webview.postMessage("SENDING BACK");
-
 						const body = `{"requests":[{"indexName":"tailwindcss","query":"${message.value}","params":"hitsPerPage=20&highlightPreTag=%3Cmark%3E&highlightPostTag=%3C%2Fmark%3E&attributesToRetrieve=%5B%22hierarchy.lvl0%22%2C%22hierarchy.lvl1%22%2C%22hierarchy.lvl2%22%2C%22hierarchy.lvl3%22%2C%22hierarchy.lvl4%22%2C%22hierarchy.lvl5%22%2C%22hierarchy.lvl6%22%2C%22content%22%2C%22type%22%2C%22url%22%5D&attributesToSnippet=%5B%22hierarchy.lvl1%3A10%22%2C%22hierarchy.lvl2%3A10%22%2C%22hierarchy.lvl3%3A10%22%2C%22hierarchy.lvl4%3A10%22%2C%22hierarchy.lvl5%3A10%22%2C%22hierarchy.lvl6%3A10%22%2C%22content%3A10%22%5D&snippetEllipsisText=%E2%80%A6&facetFilters=version%3Av3&distinct=1"}]}`;
 						const response = await fetch(
 							"https://knpxzi5b0m-dsn.algolia.net/1/indexes/*/queries?x-algolia-agent=Algolia%20for%20JavaScript%20(4.9.2)%3B%20Browser%20(lite)%3B%20docsearch%20(1.0.0-alpha.27)%3B%20docsearch-react%20(1.0.0-alpha.27)%3B%20autocomplete-core%20(1.0.0-alpha.28)&x-algolia-api-key=5fc87cef58bb80203d2207578309fab6&x-algolia-application-id=KNPXZI5B0M",

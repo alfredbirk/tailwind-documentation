@@ -65,7 +65,6 @@ const App = () => {
 
 	if (hits) {
 		for (const hit of hits) {
-			let currentLvl: any = "lvl0";
 			let currentNode: any;
 
 			if (hit.hierarchy["lvl0"] in graph) {
@@ -113,8 +112,6 @@ const App = () => {
 					}
 
 					previousLvl = currentLvl;
-
-					// currentNode = newNode;
 				}
 			}
 		}
@@ -210,10 +207,6 @@ const App = () => {
 
 	return (
 		<div className="App">
-			{/* <header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<h1 className="App-title">Welcome to React</h1>
-			</header> */}
 
 			<div className="App-header">
 				<img src={logo} className="App-logo" alt="logo" />
@@ -244,17 +237,12 @@ const App = () => {
 						autoComplete="off"
 						autoCorrect="off"
 						autoCapitalize="off"
-						// spellCheck="false"
 						placeholder="Search"
 						type="search"
 						value={query}
 					/>
 				</div>
 			</div>
-
-			{/* {hits && hits.map((hit: any) => (
-          <div>{hit.hierarchy.lvl1}</div>
-        ))} */}
 
 			{elementsToRender.length > 0 && elementsToRender.map((element: any) => element)}
 
