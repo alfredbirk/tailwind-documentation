@@ -1,7 +1,9 @@
 
 # Tailwind documentation
+[![Marketplace Version](https://vsmarketplacebadge.apphb.com/version-short/alfredbirk.tailwind-documentation.svg)](https://marketplace.visualstudio.com/items?itemName=alfredbirk.tailwind-documentation) [![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/alfredbirk.tailwind-documentation.svg)](https://marketplace.visualstudio.com/items?itemName=alfredbirk.tailwind-documentation) [![Rating](https://vsmarketplacebadge.apphb.com/rating-short/alfredbirk.tailwind-documentation.svg)](https://marketplace.visualstudio.com/items?itemName=alfredbirk.tailwind-documentation) [![Actions Status](https://github.com/formulahendry/vscode-code-runner/actions/workflows/main.yml/badge.svg)](https://github.com/formulahendry/vscode-code-runner/actions/workflows/main.yml)
 
-Instant search in Tailwind docs
+
+Instant search in Tailwind docs.
 
 
 ## Features
