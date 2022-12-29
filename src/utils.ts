@@ -1,5 +1,7 @@
 // @ts-nocheck
 
+import { useEffect, useState } from "react";
+
 const getNextLvl = (lvl: string) => {
     switch (lvl) {
         case "lvl3":
@@ -15,6 +17,34 @@ const getNextLvl = (lvl: string) => {
         default:
             break;
     }
+};
+
+export const useKeyPress = (targetKey: any) => {
+    const [keyPressed, setKeyPressed] = useState(false);
+
+    useEffect(() => {
+        const downHandler = ({ key }: any) => {
+            if (key === targetKey) {
+                setKeyPressed(true);
+            }
+        };
+
+        const upHandler = ({ key }: any) => {
+            if (key === targetKey) {
+                setKeyPressed(false);
+            }
+        };
+
+        window.addEventListener("keydown", downHandler);
+        window.addEventListener("keyup", upHandler);
+
+        return () => {
+            window.removeEventListener("keydown", downHandler);
+            window.removeEventListener("keyup", upHandler);
+        };
+    }, [targetKey]);
+
+    return keyPressed;
 };
 
 export type Node = {
@@ -94,3 +124,85 @@ export const createHierarchyGraph = (hits: any) => {
     return graph
 }
 
+export const getFlattenedItems = (hits: any) => {
+    // Creates a graph where lvl0 nodes has a children array which contains lvl1 nodes and so on
+    const graph: any = createHierarchyGraph(hits);
+    const lvl0Nodes: any = getLvl0Nodes(graph);
+    let itemID = 0;
+    let flattenedItems = []
+
+    // Traverse through the graph and return flattened items
+    for (const lvl0Node of lvl0Nodes) {
+        let stack = [lvl0Node];
+        while (stack.length > 0) {
+            const currentNode = stack.pop();
+            const isHighestLvl = currentNode.children.length === 0;
+
+            switch (currentNode.lvl) {
+                case "lvl0":
+                    flattenedItems.push({
+                        name: currentNode.name,
+                        lvl: 0,
+                    });
+                    break;
+                case "lvl1":
+                    if (isHighestLvl) {
+                        flattenedItems.push({
+                            id: itemID,
+                            lvl: 1,
+                            url: currentNode.url,
+                            name: currentNode.name,
+                            highlightResult: currentNode.highlightResult,
+                            isHighestLvl,
+                        });
+                    } else {
+                        flattenedItems.push({
+                            id: itemID,
+                            lvl: 1,
+                            url: currentNode.url,
+                            name: currentNode.name,
+                            highlightResult: currentNode.highlightResult,
+                            isHighestLvl,
+                        });
+                    }
+                    itemID += 1;
+                    break;
+                case "lvl2":
+                    if (isHighestLvl) {
+                        flattenedItems.push({
+                            id: itemID,
+                            lvl: 2,
+                            url: currentNode.url,
+                            name: currentNode.name,
+                            highlightResult: currentNode.highlightResult,
+                            isHighestLvl,
+                        });
+                        itemID += 1;
+                    }
+                    break;
+                case "lvl3":
+                    if (isHighestLvl) {
+                        flattenedItems.push({
+                            id: itemID,
+                            lvl: 3,
+                            url: currentNode.url,
+                            name: currentNode.name,
+                            highlightResult: currentNode.highlightResult,
+                            isHighestLvl,
+                        });
+                        itemID += 1;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+            for (const child of currentNode.children.reverse()) {
+                stack.push(child);
+            }
+        }
+    }
+
+    return flattenedItems
+}

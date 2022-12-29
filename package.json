@@ -45,6 +45,7 @@
     "@fortawesome/react-fontawesome": "^0.1.18",
     "@types/lodash": "^4.14.181",
     "@types/vscode": "^1.45.1",
+    "classnames": "^2.3.2",
     "lodash": "^4.17.21",
     "node-fetch": "^2.6.7",
     "react": "^16.13.1",

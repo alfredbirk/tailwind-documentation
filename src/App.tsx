@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as React from "react";
 import "./App.css";
 import { useState, useEffect } from "react";
@@ -6,7 +7,8 @@ import logo from "./tailwind-logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookOpen, faHashtag, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useDebounce } from "usehooks-ts";
-import { createHierarchyGraph, getLvl0Nodes } from "./utils";
+import { getFlattenedItems, useKeyPress } from "./utils";
+import cn from "classnames";
 
 interface vscode {
 	postMessage(message: any): void;
@@ -20,9 +22,44 @@ const vscodeApi = acquireVsCodeApi();
 const App = () => {
 	const [query, setQuery] = useState("");
 	const debouncedQuery = useDebounce<string>(query, 100);
-	const [hits, setHits] = useState<any>([]);
 	const [iframeUrl, setIframeUrl] = useState("");
+	const [items, setItems] = useState([]);
 
+	/////////////////////
+	// Keyboard navigation
+	const [selected, setSelected] = useState<any>(undefined);
+	const downPress = useKeyPress("ArrowDown");
+	const upPress = useKeyPress("ArrowUp");
+	const enterPress = useKeyPress("Enter");
+	const [cursor, setCursor] = useState<any>(0);
+	const [hovered, setHovered] = useState(undefined);
+	useEffect(() => {
+		if (items.length && downPress) {
+			setCursor((prevState: any) => (prevState < items.length - 1 ? prevState + 1 : prevState));
+		}
+	}, [downPress]);
+	useEffect(() => {
+		if (items.length && upPress) {
+			setCursor((prevState: any) => (prevState > 0 ? prevState - 1 : prevState));
+		}
+	}, [upPress]);
+	useEffect(() => {
+		if (items.length && enterPress) {
+			setSelected(cursor);
+		}
+	}, [cursor, enterPress]);
+	useEffect(() => {
+		if (items.length && hovered !== undefined) {
+			setCursor(hovered);
+		}
+	}, [hovered]);
+	useEffect(() => {
+		const selectedItem = items.find(item => item.id === selected)
+		if (selectedItem && selectedItem.url) {
+			setIframeUrl(selectedItem.url)
+		}
+	}, [selected]);
+	/////////////////////
 
 	useEffect(() => {
 		if (query) {
@@ -38,101 +75,100 @@ const App = () => {
 	};
 
 	window.addEventListener("message", (message) => {
-		setHits(message.data[0].hits);
+		const hits = message.data[0].hits
+		const flattenedItems = getFlattenedItems(hits)
+		setItems(flattenedItems)
 	});
 
 	if (iframeUrl) {
 		return <iframe width="100%" height="650px" src={iframeUrl} title="Tailwind documentation"></iframe>;
 	}
 
-	let elementsToRender: any = [];
-
-	if (hits) {
-		// Creates a graph where lvl0 nodes has a children array which contains lvl1 nodes and so on
-		const graph: any = createHierarchyGraph(hits);
-		const lvl0Nodes: any = getLvl0Nodes(graph);
-
-
-		// Given a graph, get elements to render
-		for (const lvl0Node of lvl0Nodes) {
-			let stack = [lvl0Node];
-			while (stack.length > 0) {
-				const currentNode = stack.pop();
-				const isHighestLvl = currentNode.children.length === 0;
-
-				switch (currentNode.lvl) {
-					case "lvl0":
-						elementsToRender.push(<h3 className="lvl0" dangerouslySetInnerHTML={{ __html: currentNode.name }} />);
-						break;
-					case "lvl1":
-						if (isHighestLvl) {
-							elementsToRender.push(
-								<div onClick={() => setIframeUrl(currentNode.url)} className="item-container">
-									<div>
-										<span className="icon-container">
-											<FontAwesomeIcon icon={faHashtag} />
-										</span>
-										<span className="element-name" dangerouslySetInnerHTML={{ __html: currentNode.highlightResult }} />
-									</div>
-									<FontAwesomeIcon icon={faChevronRight} />
-								</div>
-							);
-						} else {
-							elementsToRender.push(
-								<div onClick={() => setIframeUrl(currentNode.url)} className="item-container">
-									<div>
-										<span className="icon-container">
-											<FontAwesomeIcon icon={faBookOpen} />
-										</span>
-										<span className="element-name" dangerouslySetInnerHTML={{ __html: currentNode.highlightResult }} />
-									</div>
-									<FontAwesomeIcon icon={faChevronRight} />
-								</div>
-							);
-						}
-						break;
-					case "lvl2":
-						if (isHighestLvl) {
-							elementsToRender.push(
-								<div onClick={() => setIframeUrl(currentNode.url)} className="item-container lvl2">
-									<div>
-										<span className="icon-container">
-											<FontAwesomeIcon icon={faHashtag} />
-										</span>
-										<span className="element-name" dangerouslySetInnerHTML={{ __html: currentNode.highlightResult }} />
-									</div>
-									<FontAwesomeIcon icon={faChevronRight} />
-								</div>
-							);
-						}
-						break;
-					case "lvl3":
-						if (isHighestLvl) {
-							elementsToRender.push(
-								<div onClick={() => setIframeUrl(currentNode.url)} className="item-container lvl3">
-									<div className="vert">
-										<span className="icon-container">
-											<FontAwesomeIcon icon={faHashtag} />
-										</span>
-										<span className="element-name" dangerouslySetInnerHTML={{ __html: currentNode.highlightResult }} />
-									</div>
-									<FontAwesomeIcon icon={faChevronRight} />
-								</div>
-							);
-						}
-						break;
-
-					default:
-						break;
+	const renderItem = (item) => {
+		switch (item.lvl) {
+			case 0:
+				return <h3 className="lvl0" dangerouslySetInnerHTML={{ __html: item.name }} />;
+			case 1:
+				if (item.isHighestLvl) {
+					return (
+						<div
+							onClick={() => setIframeUrl(item.url)}
+							className={cn("item-container", { "item-container-hover": cursor === item.id })}
+							onMouseEnter={() => setHovered(item.id)}
+							onMouseLeave={() => setHovered(undefined)}
+						>
+							<div>
+								<span className={cn("icon-container", { "icon-container-hover": cursor === item.id })}>
+									<FontAwesomeIcon icon={faHashtag} />
+								</span>
+								<span className="element-name" dangerouslySetInnerHTML={{ __html: item.highlightResult }} />
+							</div>
+							<FontAwesomeIcon icon={faChevronRight} />
+						</div>
+					);
+				} else {
+					return (
+						<div
+							onClick={() => setIframeUrl(item.url)}
+							className={cn("item-container", { "item-container-hover": cursor === item.id })}
+							onMouseEnter={() => setHovered(item.id)}
+							onMouseLeave={() => setHovered(undefined)}
+						>
+							<div>
+								<span className={cn("icon-container", { "icon-container-hover": cursor === item.id })}>
+									<FontAwesomeIcon icon={faBookOpen} />
+								</span>
+								<span className="element-name" dangerouslySetInnerHTML={{ __html: item.highlightResult }} />
+							</div>
+							<FontAwesomeIcon icon={faChevronRight} />
+						</div>
+					);
 				}
-
-				for (const child of currentNode.children.reverse()) {
-					stack.push(child);
+				break;
+			case 2:
+				if (item.isHighestLvl) {
+					return (
+						<div
+							onClick={() => setIframeUrl(item.url)}
+							className={cn("item-container", { "item-container-hover": cursor === item.id })}
+							onMouseEnter={() => setHovered(item.id)}
+							onMouseLeave={() => setHovered(undefined)}
+						>
+							<div>
+								<span className={cn("icon-container", { "icon-container-hover": cursor === item.id })}>
+									<FontAwesomeIcon icon={faHashtag} />
+								</span>
+								<span className="element-name" dangerouslySetInnerHTML={{ __html: item.highlightResult }} />
+							</div>
+							<FontAwesomeIcon icon={faChevronRight} />
+						</div>
+					);
 				}
-			}
+				break;
+			case 3:
+				if (item.isHighestLvl) {
+					return (
+						<div
+							onClick={() => setIframeUrl(item.url)}
+							className={cn("item-container lvl3", { "item-container-hover": cursor === item.id })}
+							onMouseEnter={() => setHovered(item.id)}
+							onMouseLeave={() => setHovered(undefined)}
+						>
+							<div className="vert">
+								<span className={cn("icon-container", { "icon-container-hover": cursor === item.id })}>
+									<FontAwesomeIcon icon={faHashtag} />
+								</span>
+								<span className="element-name" dangerouslySetInnerHTML={{ __html: item.highlightResult }} />
+							</div>
+							<FontAwesomeIcon icon={faChevronRight} />
+						</div>
+					);
+				}
+				break;
+			default:
+				break;
 		}
-	}
-
+	};
 
 	return (
 		<div className="App">
@@ -172,7 +208,7 @@ const App = () => {
 				</div>
 			</div>
 
-			{elementsToRender.length > 0 && elementsToRender.map((element: any) => element)}
+			{items.length > 0 && items.map((item: any) => renderItem(item))}
 		</div>
 	);
 };
