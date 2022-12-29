@@ -72,9 +72,9 @@
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
     "esbuild": "^0.14.36",
-    "react-scripts": "^3.4.1",
+    "react-scripts": "^5.0.1",
     "rewire": "^5.0.0",
-    "terser": "^4.7.0",
+    "terser": "^4.8.1",
     "typescript": "^3.9.10"
   },
   "browserslist": [
