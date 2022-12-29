@@ -18,7 +18,6 @@ declare const acquireVsCodeApi: Function;
 // Fetch the api object
 const vscodeApi = acquireVsCodeApi();
 
-
 const App = () => {
 	const [query, setQuery] = useState("");
 	const debouncedQuery = useDebounce<string>(query, 100);
@@ -54,9 +53,9 @@ const App = () => {
 		}
 	}, [hovered]);
 	useEffect(() => {
-		const selectedItem = items.find(item => item.id === selected)
+		const selectedItem = items.find((item) => item.id === selected);
 		if (selectedItem && selectedItem.url) {
-			setIframeUrl(selectedItem.url)
+			setIframeUrl(selectedItem.url);
 		}
 	}, [selected]);
 	/////////////////////
@@ -75,13 +74,17 @@ const App = () => {
 	};
 
 	window.addEventListener("message", (message) => {
-		const hits = message.data[0].hits
-		const flattenedItems = getFlattenedItems(hits)
-		setItems(flattenedItems)
+		const hits = message.data[0].hits;
+		const flattenedItems = getFlattenedItems(hits);
+		setItems(flattenedItems);
 	});
 
 	if (iframeUrl) {
-		return <iframe width="100%" height="650px" src={iframeUrl} title="Tailwind documentation"></iframe>;
+		return (
+			<div style={{ height: "100vh" }}>
+				<iframe width="100%" height="100%" src={iframeUrl} title="Tailwind documentation"></iframe>
+			</div>
+		);
 	}
 
 	const renderItem = (item) => {
