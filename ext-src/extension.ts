@@ -1,11 +1,12 @@
 import * as path from "path";
 import * as vscode from "vscode";
 import fetch from "node-fetch";
+import { Uri } from "vscode";
 
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand("tailwind-documentation.search", () => {
-			ReactPanel.createOrShow(context.extensionPath);
+			ReactPanel.createOrShow(context.extensionUri, context.extensionPath);
 		})
 	);
 }
@@ -22,10 +23,11 @@ class ReactPanel {
 	private static readonly viewType = "react";
 
 	private readonly _panel: vscode.WebviewPanel;
+	private readonly _extensionUri: Uri;
 	private readonly _extensionPath: string;
 	private _disposables: vscode.Disposable[] = [];
 
-	public static createOrShow(extensionPath: string) {
+	public static createOrShow(extensionUri: Uri, extensionPath: string) {
 		const column = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
 
 		// If we already have a panel, show it.
@@ -33,12 +35,12 @@ class ReactPanel {
 		if (ReactPanel.currentPanel) {
 			ReactPanel.currentPanel._panel.reveal(column);
 		} else {
-			// ReactPanel.currentPanel = new ReactPanel(extensionPath, column || vscode.ViewColumn.One);
-			ReactPanel.currentPanel = new ReactPanel(extensionPath, vscode.ViewColumn.Two);
+			ReactPanel.currentPanel = new ReactPanel(extensionUri, extensionPath,  vscode.ViewColumn.Two);
 		}
 	}
 
-	private constructor(extensionPath: string, column: vscode.ViewColumn) {
+	private constructor(extensionUri: Uri, extensionPath: string, column: vscode.ViewColumn) {
+		this._extensionUri = extensionUri;
 		this._extensionPath = extensionPath;
 
 		// Create and show a new webview panel
@@ -47,7 +49,7 @@ class ReactPanel {
 			enableScripts: true,
 
 			// And restric the webview to only loading content from our extension's `media` directory.
-			localResourceRoots: [vscode.Uri.file(path.join(this._extensionPath, "build"))],
+			localResourceRoots: [vscode.Uri.joinPath(this._extensionUri, "build")],
 		});
 
 		// Set the webview's initial html content
@@ -110,10 +112,10 @@ class ReactPanel {
 		const manifest = require(path.join(this._extensionPath, "build", "asset-manifest.json"));
 		const mainScript = manifest.files["main.js"];
 		const mainStyle = manifest.files["main.css"];
-		const scriptPathOnDisk = vscode.Uri.file(path.join(this._extensionPath, "build", mainScript));
-		const scriptUri = scriptPathOnDisk.with({ scheme: "vscode-resource" });
-		const stylePathOnDisk = vscode.Uri.file(path.join(this._extensionPath, "build", mainStyle));
-		const styleUri = stylePathOnDisk.with({ scheme: "vscode-resource" });
+		const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, "build", mainScript);
+		const scriptUri = scriptPathOnDisk.with({ scheme: "https" });
+		const stylePathOnDisk = vscode.Uri.joinPath(this._extensionUri, "build", mainStyle);
+		const styleUri = this._panel.webview.asWebviewUri(stylePathOnDisk);
 
 		// Use a nonce to whitelist which scripts can be run
 		const nonce = getNonce();
@@ -126,7 +128,7 @@ class ReactPanel {
 				<meta name="theme-color" content="#000000">
 				<title>Tailwind Documentation</title>
 				<link rel="stylesheet" type="text/css" href="${styleUri}">
-				<base href="${this._panel.webview.asWebviewUri(vscode.Uri.file(path.join(this._extensionPath, "build")))}/">
+				<base href="${this._panel.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "build"))}/">
 				<meta http-equiv="Content-Security-Policy" content="default-src * self blob: data: gap:; style-src * self 'unsafe-inline' blob: data: gap:; script-src * 'self' 'unsafe-eval' 'unsafe-inline' blob: data: gap:; object-src * 'self' blob: data: gap:; img-src * self 'unsafe-inline' blob: data: gap:; connect-src self * 'unsafe-inline' blob: data: gap:; frame-src * self blob: data: gap:;">
 
 			</head>
