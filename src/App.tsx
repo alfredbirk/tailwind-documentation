@@ -3,12 +3,13 @@ import * as React from "react";
 import "./App.css";
 import { useState, useEffect } from "react";
 
-import logo from "./tailwind-logo.svg";
+import logo from "./logos/tailwind.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookOpen, faHashtag, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useDebounce } from "usehooks-ts";
 import { getFlattenedItems, useKeyPress } from "./utils";
 import cn from "classnames";
+import appConfig from "./apps/tailwind"
 
 interface vscode {
 	postMessage(message: any): void;
@@ -83,7 +84,7 @@ const App = () => {
 	if (iframeUrl) {
 		return (
 			<div style={{ height: "100vh" }}>
-				<iframe width="100%" height="100%" src={iframeUrl} title="Tailwind documentation"></iframe>
+				<iframe width="100%" height="100%" src={iframeUrl} title={`${appConfig.displayName} documentation`}></iframe>
 			</div>
 		);
 	}
@@ -178,7 +179,7 @@ const App = () => {
 		<div className="App">
 			<div className="App-header">
 				<img src={logo} className="App-logo" alt="logo" />
-				<h3>Tailwind documentation</h3>
+				<h3>{appConfig.displayName} documentation</h3>
 			</div>
 
 			<div className="modal">
