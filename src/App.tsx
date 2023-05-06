@@ -134,7 +134,7 @@ const App = () => {
 					return (
 						<div
 							onClick={() => setIframeUrl(item.url)}
-							className={cn("item-container", { "item-container-hover": cursor === item.id })}
+							className={cn("item-container lvl2-and-lvl3", { "item-container-hover": cursor === item.id })}
 							onMouseEnter={() => setHovered(item.id)}
 							onMouseLeave={() => setHovered(undefined)}
 						>
@@ -154,7 +154,7 @@ const App = () => {
 					return (
 						<div
 							onClick={() => setIframeUrl(item.url)}
-							className={cn("item-container lvl3", { "item-container-hover": cursor === item.id })}
+							className={cn("item-container lvl2-and-lvl3", { "item-container-hover": cursor === item.id })}
 							onMouseEnter={() => setHovered(item.id)}
 							onMouseLeave={() => setHovered(undefined)}
 						>
