@@ -73,11 +73,12 @@ const App = () => {
 		setQuery(value);
 	};
 
-	window.addEventListener("message", (message) => {
-		const hits = message.data[0].hits;
-		const flattenedItems = getFlattenedItems(hits);
-		setItems(flattenedItems);
-	});
+	useEffect(() => {
+		window.addEventListener("message", (message) => {
+			const hits = message.data[0].hits;
+			const flattenedItems = getFlattenedItems(hits);
+			setItems(flattenedItems)
+	})}, []);
 
 	if (iframeUrl) {
 		return (
