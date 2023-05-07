@@ -214,6 +214,8 @@ const App = () => {
 			</div>
 
 			{items.length > 0 && items.map((item: any) => renderItem(item))}
+			<hr />
+			<i>Psst! I have made a new better extension which has documentation for 10+ libraries in one place! Check out <a href="https://marketplace.visualstudio.com/items?itemName=alfredbirk.instant-docs">Instant Docs</a>.</i>
 		</div>
 	);
 };
