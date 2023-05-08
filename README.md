@@ -18,7 +18,7 @@ Instant search in Tailwind docs.
 
 
 ## Linux users
-Change keybinding due to conflift with open-terminal shortcut [here](https://code.visualstudio.com/docs/getstarted/keybindings)
+Change keybinding due to conflict with open-terminal shortcut [here](https://code.visualstudio.com/docs/getstarted/keybindings)
 
 
 
