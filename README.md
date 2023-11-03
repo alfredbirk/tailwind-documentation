@@ -21,6 +21,10 @@ Instant search in Tailwind docs.
 Change keybinding due to conflict with open-terminal shortcut [here](https://code.visualstudio.com/docs/getstarted/keybindings)
 
 
+## Issues & feature requests
+
+Issues and feature requests related to the extension can be submitted [on Github](https://github.com/alfredbirk/tailwind-documentation/issues)
+
 
 ## Psst!
-I have made a new better extension which has documentation for 10+ libraries in one place! Check out [Instant Docs](https://marketplace.visualstudio.com/items?itemName=alfredbirk.instant-docs).
+I have made a new extension which has documentation for 10+ libraries in one place! Check out [Instant Docs](https://marketplace.visualstudio.com/items?itemName=alfredbirk.instant-docs).
