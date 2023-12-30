@@ -35,6 +35,11 @@
         "command": "tailwind-documentation.search",
         "key": "ctrl+alt+t",
         "mac": "ctrl+cmd+t"
+      },
+      {
+        "command": "tailwind-documentation.search",
+        "key": "ctrl+alt+w"
+
       }
     ]
   },
