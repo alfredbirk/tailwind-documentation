@@ -2,7 +2,7 @@
   "name": "tailwind-documentation",
   "displayName": "Tailwind Documentation",
   "description": "Instant documentation search for Tailwind CSS",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "icon": "src/tailwind-logo.png",
   "engines": {
     "vscode": "^1.45.1"
@@ -39,7 +39,6 @@
       {
         "command": "tailwind-documentation.search",
         "key": "ctrl+alt+w"
-
       }
     ]
   },
